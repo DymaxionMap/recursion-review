@@ -24,6 +24,14 @@ var stringifyJSON = function(obj) {
     return '"' + obj + '"';
   }
 
+  if (typeof obj === 'function') {
+    return undefined;
+  }
+
+  if (obj === undefined) {
+    return undefined;
+  }
+
   if (Array.isArray(obj)) {
     var results = [];
     for (var i = 0; i < obj.length; i++) {
@@ -35,7 +43,9 @@ var stringifyJSON = function(obj) {
   if (typeof obj === 'object') {
     var results = [];
     for (var key in obj) {
-      results.push(stringifyJSON(key) + ':' + stringifyJSON(obj[key]));
+      if (typeof obj[key] !== 'function' && obj[key] !== undefined) {
+        results.push(stringifyJSON(key) + ':' + stringifyJSON(obj[key]));
+      }
     }
     return '{' + results.join(',') + '}';
   }
