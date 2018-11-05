@@ -23,4 +23,20 @@ var stringifyJSON = function(obj) {
   if (typeof obj === 'string') {
     return '"' + obj + '"';
   }
+
+  if (Array.isArray(obj)) {
+    var results = [];
+    for (var i = 0; i < obj.length; i++) {
+      results.push(stringifyJSON(obj[i]));
+    }
+    return '[' + results.join(',') + ']';
+  }
+
+  if (typeof obj === 'object') {
+    var results = [];
+    for (var key in obj) {
+      results.push(stringifyJSON(key) + ':' + stringifyJSON(obj[key]));
+    }
+    return '{' + results.join(',') + '}';
+  }
 };
